@@ -13,6 +13,7 @@
 ---
 
 - Computer Science Student @ UdA | Secure Embedded Systems & Cryptology
+- CEO of [Aula Mada](https://aulamada.com)
 
 ---
 
