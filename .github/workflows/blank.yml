@@ -24,7 +24,18 @@ jobs:
       - name: Corregir "Joined GitHub" y publicar
         run: |
           YEARS=$(( $(date +%Y) - 2022 ))
-          sed -E "s/Joined GitHub [^<]*ago/Joined GitHub ${YEARS} years ago/" /metrics_renders/github-metrics.svg > github-metrics.svg
+          F=/metrics_renders/github-metrics.svg
+          # Sumar lo que no se pudo traer de la cuenta antigua (MigueldeHaroce)
+          num() { grep -oE "$1" "$F" | grep -oE '[0-9]+' | head -1; }
+          FOL=$(( $(num 'Followed by [0-9]+') + 3 ))
+          STA=$(( $(num '[0-9]+ Stargazers?') + 3 ))
+          WAT=$(( $(num '[0-9]+ Watchers?') + 15 ))
+          sed -E \
+            -e "s/Joined GitHub [^<]*ago/Joined GitHub ${YEARS} years ago/" \
+            -e "s/Followed by [0-9]+ users?/Followed by ${FOL} users/" \
+            -e "s/[0-9]+ Stargazers?/${STA} Stargazers/" \
+            -e "s/[0-9]+ Watchers?/${WAT} Watchers/" \
+            "$F" > github-metrics.svg
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add github-metrics.svg
