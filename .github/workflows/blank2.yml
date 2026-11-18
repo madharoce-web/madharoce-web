@@ -21,4 +21,4 @@ jobs:
           token: ${{ secrets.METRICS_TOKEN }}
           base: ""
           plugin_repositories: yes
-          plugin_repositories_featured: MigueldeHaroce/BlockCrypt, madharoce-web/Campus
+          plugin_repositories_featured: madharoce-web/BlockCrypt, madharoce-web/Campus
