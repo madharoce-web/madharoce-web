@@ -9,7 +9,7 @@ on:
 jobs:
   github-metrics:
     runs-on: ubuntu-latest
-    environment: 
+    environment:
       name: production
     permissions:
       contents: write
@@ -17,3 +17,15 @@ jobs:
       - uses: lowlighter/metrics@latest
         with:
           token: ${{ secrets.METRICS_TOKEN }}
+          output_action: none
+
+      # La cuenta original (2022) fue robada; mostrar la fecha real de alta
+      - uses: actions/checkout@v4
+      - name: Corregir "Joined GitHub" y publicar
+        run: |
+          YEARS=$(( $(date +%Y) - 2022 ))
+          sed -E "s/Joined GitHub [^<]*ago/Joined GitHub ${YEARS} years ago/" /metrics_renders/github-metrics.svg > github-metrics.svg
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add github-metrics.svg
+          git diff --cached --quiet || (git commit -m "Update github-metrics.svg - [Skip GitHub Action]" && git push)
