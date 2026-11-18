@@ -30,11 +30,14 @@ jobs:
           FOL=$(( $(num 'Followed by [0-9]+') + 3 ))
           STA=$(( $(num '[0-9]+ Stargazers?') + 3 ))
           WAT=$(( $(num '[0-9]+ Watchers?') + 15 ))
+          # 1711 commits antiguos - 889 que ya cuentan aquí por los repos copiados = 822 (privados)
+          COM=$(( $(num '[0-9]+ Commits?') + 822 ))
           sed -E \
             -e "s/Joined GitHub [^<]*ago/Joined GitHub ${YEARS} years ago/" \
             -e "s/Followed by [0-9]+ users?/Followed by ${FOL} users/" \
             -e "s/[0-9]+ Stargazers?/${STA} Stargazers/" \
             -e "s/[0-9]+ Watchers?/${WAT} Watchers/" \
+            -e "s/[0-9]+ Commits?/${COM} Commits/" \
             "$F" > github-metrics.svg
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
